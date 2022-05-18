@@ -19,7 +19,7 @@ object Result {
       val newPos = (i + arr.length - d) % arr.length
       newArr(newPos) = arr(i)
     }
-    arr
+    newArr
   }
 
 }
