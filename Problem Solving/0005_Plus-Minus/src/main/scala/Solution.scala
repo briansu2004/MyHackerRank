@@ -8,12 +8,11 @@ object Result {
    * The function accepts INTEGER_ARRAY arr as parameter.
    */
 
-  def plusMinus(arr: Array[Int]) {
+  def plusMinus(arr: Array[Int]): Unit = {
     // Write your code here
     var positive = 0
     var negative = 0
 
-    arr.foreach(x => println(x))
     for (i <- arr.indices) {
       if (arr(i) > 0) {
         positive = positive + 1
@@ -22,15 +21,15 @@ object Result {
       }
     }
 
-    println(positive / arr.length)
-    println(negative / arr.length)
-    println((arr.length - positive - negative) / arr.length)
+    println(f"${BigDecimal(positive) / BigDecimal(arr.length)}%.6f")
+    println(f"${BigDecimal(negative) / BigDecimal(arr.length)}%.6f")
+    println(f"${BigDecimal(arr.length - positive - negative) / BigDecimal(arr.length)}%.6f")
   }
 
 }
 
 object Solution {
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     val n = StdIn.readLine.trim.toInt
 
     val arr = StdIn.readLine.replaceAll("\\s+$", "").split(" ").map(_.trim.toInt)
