@@ -20,27 +20,26 @@ object Result {
 
     queries.foreach { line => {
       //printArray(x)
+      val idx = (line(1) ^ lastAnswer) % n
       if (line(0) == 1) {
         // Query type 1
-        val idx = (line(1) ^ lastAnswer) % n
-        if (arr(idx) == null || arr(idx).isEmpty) {
+        if (arr(idx) == null || arr(idx).nonEmpty) {
           arr(idx) = List(line(2))
         } else {
-          arr(idx) = (line(2) :: arr(idx)).reverse
+          arr(idx) = arr(idx) :+ line(2)
         }
       } else if (line(0) == 2) {
         // Query type 2
-        val idx = (line(1) ^ lastAnswer) % n
-        //lastAnswer = arr(idx)(line(2) % arr(idx).size)
-        if (arr(idx) != null && !arr(idx).isEmpty) {
-          lastAnswer = arr(idx)(line(2) % arr(idx).size)
-          outList = lastAnswer :: outList
+        //lastAnswer = arr(idx)(line(2) % arr(idx).length)
+        if (arr(idx) != null && arr(idx).nonEmpty) {
+          lastAnswer = arr(idx)(line(2) % arr(idx).length)
+          outList = outList :+ lastAnswer
         }
       }
     }
     }
 
-    outList.reverse.toArray
+    outList.toArray
   }
 
   def printArray(arr: Array[Int]): Unit = {
@@ -51,7 +50,7 @@ object Result {
 }
 
 object Solution {
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     val printWriter = new PrintWriter(System.out) //sys.env("OUTPUT_PATH"))
 
     val firstMultipleInput = StdIn.readLine.replaceAll("\\s+$", "").split(" ")
