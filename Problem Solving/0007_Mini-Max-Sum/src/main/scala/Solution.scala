@@ -1,48 +1,30 @@
-import java.io._
 import scala.io._
 
 object Result {
 
   /*
-   * Complete the 'reverseArray' function below.
+   * Complete the 'miniMaxSum' function below.
    *
-   * The function is expected to return an INTEGER_ARRAY.
-   * The function accepts INTEGER_ARRAY a as parameter.
+   * The function accepts INTEGER_ARRAY arr as parameter.
    */
 
-  def reverseArray(a: Array[Int]): Array[Int] = {
+  def miniMaxSum(arr: Array[Int]): Unit = {
     // Write your code here
-    println(s"Before the reversion, the array was:")
-    a.foreach(x => print(s"$x "))
-
-    val n = a.length
-    var tmp: Int = 0
-    for (i <- 0 until (n - n % 2) / 2) {
-      tmp = a(i)
-      a(i) = a(n - i - 1)
-      a(n - i -1) = tmp
+    var sum: Long = 0L
+    for (i <- arr.indices) {
+      sum = sum + arr(i)
     }
 
-    println(s"Reversed array is:")
-    a.foreach(x => print(s"$x "))
-    println()
-
-    a
+    println(s"${sum - arr.max} ${sum - arr.min}")
   }
+
 }
 
 object Solution {
-  def main(args: Array[String]) {
-    val printWriter = new PrintWriter(System.out); //sys.env("OUTPUT_PATH"))
-
-    val arrCount = StdIn.readLine.trim.toInt
+  def main(args: Array[String]): Unit = {
 
     val arr = StdIn.readLine.replaceAll("\\s+$", "").split(" ").map(_.trim.toInt)
 
-    val res = Result.reverseArray(arr)
-
-    printWriter.println(res.mkString(" "))
-
-    printWriter.close()
+    Result.miniMaxSum(arr)
   }
 }
