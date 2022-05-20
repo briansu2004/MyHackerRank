@@ -28,6 +28,11 @@ object Result {
 
   def runningMedian(a: Array[Int]): Array[Double] = {
     // Write your code here
+    val n = a.length
+    for (i <- a.indices) {
+
+    }
+
 
     Array(0.0)
   }
