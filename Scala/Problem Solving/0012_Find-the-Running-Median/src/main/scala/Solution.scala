@@ -1,21 +1,7 @@
 import java.io._
-import java.math._
-import java.security._
-import java.text._
-import java.util._
-import java.util.concurrent._
-import java.util.function._
-import java.util.regex._
-import java.util.stream._
-import scala.collection.concurrent._
-import scala.collection.immutable._
-import scala.collection.mutable._
-import scala.concurrent._
+import scala.collection.mutable
 import scala.io._
 import scala.math._
-import scala.reflect._
-import scala.sys._
-import scala.util.matching._
 
 object Result {
 
@@ -28,19 +14,66 @@ object Result {
 
   def runningMedian(a: Array[Int]): Array[Double] = {
     // Write your code here
-    val n = a.length
-    for (i <- a.indices) {
+    // maxheap
+    val lowers = mutable.PriorityQueue[Int]()
+    // minheap
+    val highers = mutable.PriorityQueue[Int]()(Ordering[Int].reverse)
 
+    val medians: Array[Double] = Array.ofDim[Double](a.length)
+    for (i <- a.indices) {
+      addNumber(a(i), lowers, highers)
+      rebalance(lowers, highers)
+      medians(i) = getMedian(lowers, highers)
+    }
+    medians
+  }
+
+  def getMedian(lowers: mutable.PriorityQueue[Int], highers: mutable.PriorityQueue[Int]): Double = {
+    var biggerHeap: mutable.PriorityQueue[Int] = mutable.PriorityQueue[Int]()
+    var smallerHeap: mutable.PriorityQueue[Int] = mutable.PriorityQueue[Int]()
+    if (lowers.size > highers.size) {
+      biggerHeap = lowers
+      smallerHeap = highers
+    } else {
+      biggerHeap = highers
+      smallerHeap = lowers
     }
 
+    if (biggerHeap.size == smallerHeap.size) {
+      (smallerHeap.head + biggerHeap.head).toDouble / 2
+    } else {
+      biggerHeap.head
+    }
+  }
 
-    Array(0.0)
+  def rebalance(lowers: mutable.PriorityQueue[Int], highers: mutable.PriorityQueue[Int]): Unit = {
+    var biggerHeap: mutable.PriorityQueue[Int] = mutable.PriorityQueue[Int]()
+    var smallerHeap: mutable.PriorityQueue[Int] = mutable.PriorityQueue[Int]()
+    if (lowers.size > highers.size) {
+      biggerHeap = lowers
+      smallerHeap = highers
+    } else {
+      biggerHeap = highers
+      smallerHeap = lowers
+    }
+
+    if (biggerHeap.size - smallerHeap.size >= 2) {
+      smallerHeap.enqueue(biggerHeap.dequeue())
+    }
+  }
+
+  def addNumber(n: Int, lowers: mutable.PriorityQueue[Int], highers: mutable.PriorityQueue[Int]): Unit = {
+    if (lowers.isEmpty || n < lowers.head) {
+      lowers.enqueue(n)
+    } else {
+      highers.enqueue(n)
+    }
   }
 
 }
 
 object Solution {
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     val printWriter = new PrintWriter(System.out) //sys.env("OUTPUT_PATH"))
 
     val aCount = StdIn.readLine.trim.toInt
