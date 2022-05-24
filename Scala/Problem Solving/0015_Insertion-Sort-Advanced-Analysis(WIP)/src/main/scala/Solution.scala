@@ -10,9 +10,9 @@ object Result {
    * The function accepts INTEGER_ARRAY arr as parameter.
    */
 
-  def insertionSort(arr: Array[Int]): BigInt = {
+  def insertionSort(arr: Array[Int]): Long = {
     // Write your code here
-    var cnt: BigInt = 0
+    var cnt: Long = 0L
     for (i <- 0 until arr.length - 1) {
       var j = i + 1
       while (j > 0 && arr(j - 1) > arr(j)) {
