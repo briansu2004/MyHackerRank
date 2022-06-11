@@ -15,6 +15,8 @@ object Result {
 
     val Z: Array[BigInt] = Array.ofDim[BigInt](s.length)
     getZarr(s, s.length, Z)
+//    Z(0) = s.length
+//    println(s"The Z array of $s is: ${Z.mkString(",")}")
 
     for (i <- 1 until s.length) {
       n = n + Z(i)
