@@ -2,7 +2,6 @@ import java.io._
 import scala.io._
 
 object Result {
-
   /*
    * Complete the 'stringSimilarity' function below.
    *
@@ -10,34 +9,21 @@ object Result {
    * The function accepts STRING s as parameter.
    */
 
-
   def stringSimilarity(s: String): Int = {
     // Write your code here
     var n = s.length
+
+    val Z: Array[Int] = Array.fill[Int](s.length)(0)
+    getZarr(s, s.length, Z)
+
     for (i <- 1 until s.length) {
       val ns = s.slice(i, s.length)
-      n = n + getStringSimilarity(s, ns)
-    }
-    n
-  }
-
-  def getStringSimilarity(s: String, ns: String): Int = {
-    var n = 0
-
-    val concat = ns + "$" + s
-    val Z: Array[Int] = getZarr(concat)
-    for (i <- 0 until concat.length) {
       n = n + Z(i)
     }
-
     n
   }
 
-  def getZarr(s: String): Array[Int] = {
-    val Z: Array[Int] = Array[Int](s.length)
-
-    val n = s.length
-
+  def getZarr(s: String, n: Int, Z: Array[Int]): Unit = {
     /// [L,R] make a window which matches with prefix of s
     var L = 0
     var R = 0
@@ -57,8 +43,7 @@ object Result {
 
         Z(i) = R - L
         R = R - 1
-      }
-      else {
+      } else {
         // k = i-L so k corresponds to number which matches in [L,R] interval.
         val k = i - L
 
@@ -79,8 +64,6 @@ object Result {
         }
       }
     }
-
-    Z
   }
 
   //  def stringSimilarityN2(s: String): Int = {
