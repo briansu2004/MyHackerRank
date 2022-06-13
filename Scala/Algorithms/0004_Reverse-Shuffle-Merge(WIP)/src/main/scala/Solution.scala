@@ -25,9 +25,9 @@ object Result {
     for (i <- unused.indices) {
       required(i) = unused(i) / 2
     }
-    println(s"unused: ${unused.mkString("")}")
-    println(s"used: ${used.mkString("")}")
-    println(s"required: ${required.mkString("")}")
+//    println(s"unused: ${unused.mkString("")}")
+//    println(s"used: ${used.mkString("")}")
+//    println(s"required: ${required.mkString("")}")
 
     // last character
     var c = s(n - 1)
@@ -51,7 +51,7 @@ object Result {
           res(j) = c
           j = j + 1
           unused(cPos) = unused(cPos) - 1
-          used(cPos) = used(cPos) - 1
+          used(cPos) = used(cPos) + 1
         } else {
           // check bigger element
           while (j > 0 && c < res(j - 1) && used(res(j - 1) - 'a') - 1 + unused(res(j - 1) - 'a') >= required(res(j - 1) - 'a')) {
@@ -61,7 +61,7 @@ object Result {
           res(j) = c
           j = j + 1
           unused(cPos) = unused(cPos) - 1
-          used(cPos) = used(cPos) - 1
+          used(cPos) = used(cPos) + 1
         }
       } else {
         // discarding
