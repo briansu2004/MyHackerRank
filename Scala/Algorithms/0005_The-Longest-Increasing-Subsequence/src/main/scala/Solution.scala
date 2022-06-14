@@ -1,21 +1,6 @@
 import java.io._
-import java.math._
-import java.security._
-import java.text._
-import java.util._
-import java.util.concurrent._
-import java.util.function._
-import java.util.regex._
-import java.util.stream._
-import scala.collection.concurrent._
-import scala.collection.immutable._
-import scala.collection.mutable._
-import scala.concurrent._
 import scala.io._
 import scala.math._
-import scala.reflect._
-import scala.sys._
-import scala.util.matching._
 
 object Result {
 
@@ -28,14 +13,28 @@ object Result {
 
   def longestIncreasingSubsequence(arr: Array[Int]): Int = {
     // Write your code here
-
-    0
+    val tails = Array.fill[Int](arr.length)(0)
+    var size = 0
+    for (x <- arr) {
+      var i = 0
+      var j = size
+      while (i != j) {
+        val m = (i + j - (i + j) % 2) / 2
+        if (tails(m) < x) {
+          i = m + 1
+        } else {
+          j = m
+        }
+      }
+      tails(i) = x
+      size = max(i + 1, size)
+    }
+    size
   }
-
 }
 
 object Solution {
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     val printWriter = new PrintWriter(System.out); //sys.env("OUTPUT_PATH"))
 
     val n = StdIn.readLine.trim.toInt
