@@ -21,13 +21,13 @@ object Result {
       total = total + W(i)
     }
 
-    (score / total).setScale(1)
+    score / total
   }
 
 }
 
 object Solution {
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     val n = StdIn.readLine.trim.toInt
 
     val vals = StdIn.readLine.replaceAll("\\s+$", "").split(" ").map(_.trim.toInt)
@@ -36,6 +36,6 @@ object Solution {
 
     val res = Result.weightedMean(vals, weights)
 
-    println(res)
+    println(f"$res%.1f")
   }
 }
