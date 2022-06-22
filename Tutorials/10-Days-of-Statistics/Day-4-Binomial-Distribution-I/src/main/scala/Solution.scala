@@ -1,21 +1,36 @@
-import scala.annotation.tailrec
 import scala.math._
 
 object Solution {
-
-  @tailrec
-    def fact(n: Int): Int = {
-      if (n == 0) {
-        return 1
+  val factorials: LazyList[Int] = {
+    def f: LazyList[Int] = {
+      1.toInt #:: f.zipWithIndex.map {
+        n => {
+          //println(n)
+          n._1 * (n._2 + 2)
+        }
       }
-
-      n * fact(n - 1)
     }
 
-  def main(args: Array[String]) {
+    1 #:: f
+  }
+
+  def comb(n: Int, x: Int): Double = {
+    factorials(n).toDouble / (factorials(x).toDouble * factorials(n - x).toDouble)
+  }
+
+  def calc(x: Int, n: Int, p: Double): Double = {
+    comb(n, x) * pow(p, x) * pow(1 - p, n - x)
+  }
+
+  def main(args: Array[String]): Unit = {
     val boy = 1.09
     val girl = 1
-    val chance = pow(boy / (boy + girl), 3) * (1 + 1 / (boy + girl) + 1 / (boy + girl) * (boy + girl) + 1 / (boy + girl) * (boy + girl) * (boy + girl))
+    val total = 6
+    val min = 3
+    var chance: Double = 0
+
+    (min to total).foreach(x => chance = chance + calc(x, total, boy / (boy + girl)))
+
     println(f"$chance%.3f")
   }
 }
