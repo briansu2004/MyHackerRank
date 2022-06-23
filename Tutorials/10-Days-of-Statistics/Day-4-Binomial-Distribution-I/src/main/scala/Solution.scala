@@ -3,12 +3,7 @@ import scala.math._
 object Solution {
   val factorials: LazyList[Int] = {
     def f: LazyList[Int] = {
-      1.toInt #:: f.zipWithIndex.map {
-        n => {
-          //println(n)
-          n._1 * (n._2 + 2)
-        }
-      }
+      1 #:: f.zipWithIndex.map { n => n._1 * (n._2 + 2) }
     }
 
     1 #:: f
