@@ -5,7 +5,6 @@ object Solution {
     def f: LazyList[Int] = {
       1 #:: f.zipWithIndex.map { n => n._1 * (n._2 + 2) }
     }
-
     1 #:: f
   }
 
@@ -20,12 +19,8 @@ object Solution {
   def main(args: Array[String]): Unit = {
     val boy = 1.09
     val girl = 1
-    val total = 6
-    val min = 3
-    var chance: Double = 0
-
-    (min to total).foreach(x => chance = chance + calc(x, total, boy / (boy + girl)))
-
-    println(f"$chance%.3f")
+    var odds: Double = 0
+    (3 to 6).foreach(x => odds = odds + calc(x, 6, boy / (boy + girl)))
+    println(f"$odds%.3f")
   }
 }
