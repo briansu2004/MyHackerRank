@@ -24,59 +24,74 @@ import os
 import random
 import re
 import sys
-import math
-sys.setrecursionlimit(10**8)
+from collections import defaultdict
 
-
-def cn2(n):
-    return n * (n - 1) // 2
+# Complete the journeyToMoon function below.
 
 
 def journeyToMoon(n, astronaut):
-    # create adjacency list for graph edges
-    graph = [[] for i in range(n)]
-    for x, y in astronaut:
-        graph[x].append(y)
-        graph[y].append(x)
 
-    visited = [False] * n
+    graph = defaultdict(list)
 
-    # calculate total pairs
-    pairs = cn2(n)
+    for i, j in astronaut:
 
-    # create dfs function
-    # to find # of persons in one country
-    def dfs(u, graph, visited):
-        visited[u] = True
+        graph[i].append(j)
+        graph[j].append(i)
 
-        # vertices = persons
-        vertices = 1
-        for v in graph[u]:
-            if visited[v] == False:
-                vertices += dfs(v, graph, visited)
-        return vertices
+    visited = set()
 
-    # main logic
-    for v in range(n):
-        if visited[v] == False:
-            n_persons = dfs(v, graph, visited)
-            # print(f"# of persons: ", n_persons)
-            # remove possible combinations from the same country
-            pairs -= cn2(n_persons)
+    def dfs(v):
 
-    return pairs
+        visited.add(v)
+
+        nodes = 1
+
+        if v in graph:
+
+            for j in graph[v]:
+
+                if j not in visited:
+
+                    nodes += dfs(j)
+
+        return nodes
+
+    ans = 0
+    sum = 0
+
+    countrySizes = []
+
+    for i in range(n):
+
+        if i not in visited:
+
+            countrySizes.append(dfs(i))
+
+    for i in countrySizes:
+
+        ans += sum*i
+
+        sum += i
+
+    return ans
 
 
 if __name__ == '__main__':
     with open('stdin.txt') as f:
+
         sys.setrecursionlimit(1500)
+
         np = f.readline().split()
+
         n = int(np[0])
+
         p = int(np[1])
+
         astronaut = []
 
         for _ in range(p):
             astronaut.append(list(map(int, f.readline().rstrip().split())))
 
         result = journeyToMoon(n, astronaut)
+
         print(result)

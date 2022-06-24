@@ -1,5 +1,4 @@
 import java.io._
-import java.util._
 import scala.collection.mutable
 import scala.io._
 
@@ -14,23 +13,54 @@ object Result {
    *  2. 2D_INTEGER_ARRAY astronaut
    */
 
-  def journeyToMoon(n: Int, astronaut: Array[Array[Int]]): Int = {
-    // Write your code here
-
-    println(s"Total $n sstronauts ")
-    astronaut.map(x => println(x.mkString(",")))
-
-    val graph: Map[()] = mutable.HashMap(List[Int]())()
-
-
-
-    0
+  def cn2(n: Long): Long = {
+    n * (n - 1) / 2
   }
 
+  def journeyToMoon(n: Int, astronaut: Array[Array[Int]]): Long = {
+    // Write your code here
+    //    println(s"Total $n sstronauts ")
+    //    astronaut.map(x => println(x.mkString(",")))
+
+    //val graph: Array[Array[Int]] = Array.ofDim[Int](n, n)
+    val graph: Array[mutable.Queue[Int]] = Array.fill[mutable.Queue[Int]](n)(mutable.Queue[Int]())
+    for (i <- astronaut.indices) {
+      val x = astronaut(i)(0)
+      val y = astronaut(i)(1)
+      graph(x).enqueue(y)
+      graph(y).enqueue(x)
+    }
+
+    val visited: Array[Boolean] = Array.fill[Boolean](n)(false)
+
+    var pairs: Long = cn2(n)
+
+    def dfs(u: Int, graph: Array[mutable.Queue[Int]], visited: Array[Boolean]): Int = {
+      visited(u) = true
+
+      var vertices = 1
+      for (v <- graph(u).indices) {
+        if (!visited(graph(u)(v))) {
+          vertices = vertices + dfs(graph(u)(v), graph, visited)
+        }
+      }
+
+      vertices
+    }
+
+    for (v <- 0 until n) {
+      if (!visited(v)) {
+        val numPersons = dfs(v, graph, visited)
+        pairs = pairs - cn2(numPersons)
+      }
+    }
+
+    pairs
+  }
 }
 
 object Solution {
-  def main(args: Array[String]) {
+  def main(args: Array[String]): Unit = {
     val printWriter = new PrintWriter(System.out); //sys.env("OUTPUT_PATH"))
 
     val firstMultipleInput = StdIn.readLine.replaceAll("\\s+$", "").split(" ")
