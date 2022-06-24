@@ -1,18 +1,37 @@
+import scala.collection.mutable._
+
 object Solution {
+  /* Using Queue ! */
   def parseString(s: String): String = {
-    val odd: Array[Char] = Array.ofDim[Char](s.length)
-    val even: Array[Char] = Array.ofDim[Char](s.length)
+    var odd = Queue[Char]()
+    var even = Queue[Char]()
 
     for (i <- 0 until s.length by 2) {
-      even(i) = s(i)
+      even.enqueue(s(i))
       if (i < s.length - 1) {
-        odd(i + 1) = s(i + 1)
+        odd.enqueue(s(i + 1))
       }
     }
 
-    even.filter(_.isLetter).mkString("") + " " + odd.filter(_.isLetter).mkString("")
+    even.mkString("") + " " + odd.mkString("")
   }
 
+// /* Not good as well */
+//  def parseString2(s: String): String = {
+//    val odd: Array[Char] = Array.ofDim[Char](s.length)
+//    val even: Array[Char] = Array.ofDim[Char](s.length)
+//
+//    for (i <- 0 until s.length by 2) {
+//      even(i) = s(i)
+//      if (i < s.length - 1) {
+//        odd(i + 1) = s(i + 1)
+//      }
+//    }
+//
+//    even.filter(_.isLetter).mkString("") + " " + odd.filter(_.isLetter).mkString("")
+//  }
+
+// /* Not good */
 //  def parseString1(s: String): String = {
 //    var odd: List[Char] = List()
 //    var even: List[Char] = List()
