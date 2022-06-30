@@ -18,6 +18,8 @@ class Day12 {
         for (int i = 0; i < numScores; i++) {
             scores.add(scanner.nextInt());
         }
+        scanner.close();
+
         double averageScore = scores.stream().mapToInt(Integer::intValue).sum() / numScores;
         char grade;
         if (averageScore >= 90) {
@@ -34,8 +36,8 @@ class Day12 {
             grade = 'T';
         }
 
-        System.out.printf("Name: %s, %s\n", lastName, firstName);
-        System.out.printf("ID: %s\n", id);
+        System.out.printf("Name: %s, %s%n", lastName, firstName);
+        System.out.printf("ID: %s%n", id);
         System.out.printf("Grade: %s", grade);
     }
 }
