@@ -40,3 +40,9 @@ import scala.collection.mutable
 
     val visited: Array[Boolean] = Array.fill[Boolean](n)(false)
 ```
+
+## [Java] List<Integer> to int[]
+
+```java
+int[] cookies = arr.stream().mapToInt(Integer::intValue).toArray();
+```
