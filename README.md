@@ -22,3 +22,21 @@ if __name__ == '__main__':
 
         t = int(f.readline().strip())
 ```
+
+## [Scala] I use Array[mutable.Queue[Int]] to solve graph problems with Scala
+
+```scala
+import scala.collection.mutable
+
+...
+
+    val graph: Array[mutable.Queue[Int]] = Array.fill[mutable.Queue[Int]](n)(mutable.Queue[Int]())
+    for (i <- astronaut.indices) {
+      val x = astronaut(i)(0)
+      val y = astronaut(i)(1)
+      graph(x).enqueue(y)
+      graph(y).enqueue(x)
+    }
+
+    val visited: Array[Boolean] = Array.fill[Boolean](n)(false)
+```
