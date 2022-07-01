@@ -5,57 +5,56 @@ import scala.io._
 object Result {
 
   /*
-   * Complete the 'journeyToMoon' function below.
+   * Complete the 'roadsAndLibraries' function below.
    *
-   * The function is expected to return an INTEGER.
+   * The function is expected to return a LONG_INTEGER.
    * The function accepts following parameters:
    *  1. INTEGER n
-   *  2. 2D_INTEGER_ARRAY astronaut
+   *  2. INTEGER c_lib
+   *  3. INTEGER c_road
+   *  4. 2D_INTEGER_ARRAY cities
    */
 
-  def cn2(n: Long): Long = {
-    n * (n - 1) / 2
-  }
-
-  def journeyToMoon(n: Int, astronaut: Array[Array[Int]]): Long = {
-    // Write your code here
-    //    println(s"Total $n sstronauts ")
-    //    astronaut.map(x => println(x.mkString(",")))
-
-    //val graph: Array[Array[Int]] = Array.ofDim[Int](n, n)
-    val graph: Array[mutable.Queue[Int]] = Array.fill[mutable.Queue[Int]](n)(mutable.Queue[Int]())
-    for (i <- astronaut.indices) {
-      val x = astronaut(i)(0)
-      val y = astronaut(i)(1)
+  def roadsAndLibraries(n: Int, c_lib: Int, c_road: Int, cities: Array[Array[Int]]): Long = {
+    // create graph
+    val graph: Array[mutable.Queue[Int]] = Array.fill[mutable.Queue[Int]](n + 1)(mutable.Queue[Int]())
+    for (i <- cities.indices) {
+      // bidirectional graph
+      val x = cities(i)(0)
+      val y = cities(i)(1)
       graph(x).enqueue(y)
       graph(y).enqueue(x)
     }
 
-    val visited: Array[Boolean] = Array.fill[Boolean](n)(false)
+    val visited: Array[Boolean] = Array.fill[Boolean](n + 1)(false)
 
-    var pairs: Long = cn2(n)
-
+    // create depth first search function to find the subset of cities
     def dfs(u: Int, graph: Array[mutable.Queue[Int]], visited: Array[Boolean]): Int = {
       visited(u) = true
-
       var vertices = 1
       for (v <- graph(u).indices) {
         if (!visited(graph(u)(v))) {
           vertices = vertices + dfs(graph(u)(v), graph, visited)
         }
       }
-
       vertices
     }
 
-    for (v <- 0 until n) {
+    // main logic
+    var total_cost: Long = 0
+    for (v <- 1 until n + 1) {
       if (!visited(v)) {
-        val numPersons = dfs(v, graph, visited)
-        pairs = pairs - cn2(numPersons)
+        // find no. of cities in the subset of graph
+        val n_cities = dfs(v, graph, visited)
+        // calculate cost of roads and 1 library
+        val cost1 = (n_cities - 1) * c_road + c_lib
+        // calculate cost of building libraries in all cities
+        val cost2 = n_cities * c_lib
+        // add the minimum cost to the total
+        total_cost += Math.min(cost1, cost2)
       }
     }
-
-    pairs
+    total_cost
   }
 }
 
@@ -63,25 +62,30 @@ object Solution {
   def main(args: Array[String]): Unit = {
     val printWriter = new PrintWriter(System.out); //sys.env("OUTPUT_PATH"))
 
-    val firstMultipleInput = StdIn.readLine.replaceAll("\\s+$", "").split(" ")
+    val q = StdIn.readLine.trim.toInt
 
-    val n = firstMultipleInput(0).toInt
+    for (qItr <- 1 to q) {
+      val firstMultipleInput = StdIn.readLine.replaceAll("\\s+$", "").split(" ")
 
-    val p = firstMultipleInput(1).toInt
+      val n = firstMultipleInput(0).toInt
 
-    val astronaut = Array.ofDim[Int](p, 2)
+      val m = firstMultipleInput(1).toInt
 
-    for (i <- 0 until p) {
-      astronaut(i) = StdIn.readLine.replaceAll("\\s+$", "").split(" ").map(_.trim.toInt)
+      val c_lib = firstMultipleInput(2).toInt
+
+      val c_road = firstMultipleInput(3).toInt
+
+      val cities = Array.ofDim[Int](m, 2)
+
+      for (i <- 0 until m) {
+        cities(i) = StdIn.readLine.replaceAll("\\s+$", "").split(" ").map(_.trim.toInt)
+      }
+
+      val result = Result.roadsAndLibraries(n, c_lib, c_road, cities)
+
+      printWriter.println(result)
     }
-
-    val result = Result.journeyToMoon(n, astronaut)
-
-    printWriter.println(result)
 
     printWriter.close()
   }
 }
-
-
-
