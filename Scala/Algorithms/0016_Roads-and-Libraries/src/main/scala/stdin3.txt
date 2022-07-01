@@ -1,0 +1,36 @@
+def journeyToMoon(n, astronaut):
+    graph = defaultdict(list)
+    for i, j in astronaut:
+        graph[i].append(j)
+        graph[j].append(i)
+    visited = set()
+    def dfs(v):
+        visited.add(v)
+        nodes = 1
+        if v in graph:
+            for j in graph[v]:
+                if j not in visited:
+                    nodes += dfs(j)
+        return nodes
+    ans = 0
+    sum = 0
+    countrySizes = []
+    for i in range(n):
+        if i not in visited:
+            countrySizes.append(dfs(i))
+    for i in countrySizes:
+        ans += sum*i
+        sum += i
+    return ans
+
+if __name__ == '__main__':
+    with open('stdin.txt') as f:
+        sys.setrecursionlimit(1500)
+        np = f.readline().split()
+        n = int(np[0])
+        p = int(np[1])
+        astronaut = []
+        for _ in range(p):
+            astronaut.append(list(map(int, f.readline().rstrip().split())))
+        result = journeyToMoon(n, astronaut)
+        print(result)
