@@ -46,3 +46,29 @@ import scala.collection.mutable
 ```java
 int[] cookies = arr.stream().mapToInt(Integer::intValue).toArray();
 ```
+
+## [Python] float['inf']
+
+While performing mathematical operations ∞ is a very crucial concept.
+
+float("inf") or float("INF") or float("Inf") or float("inF") or float("infinity") creates a float object holding infinity
+
+float("-inf") or float("-INF") or float("-Inf") or float("-infinity") creates a float object holding negative infinity
+
+float("NAN") or float("nan") or float("Nan") creates float holding not a number
+
+## [Python] PE8 import
+
+Refactor from
+
+```python
+from collections import *
+from heapq import *
+```
+
+to soemthing like this -
+
+```python
+from collections import defaultdict
+from heapq import heappop, heappush
+```
