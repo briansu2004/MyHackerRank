@@ -96,3 +96,5 @@ to soemthing like this -
 from collections import defaultdict
 from heapq import heappop, heappush
 ```
+
+## SQL (Basic) Skills Certification Test
