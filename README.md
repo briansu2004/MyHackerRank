@@ -2,6 +2,18 @@
 
 My HackerRank
 
+## [Java] read from file
+
+```java
+try (InputStream inputStream = new FileInputStream("stdin.txt");
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));) {
+    ...
+  } catch (Exception ex) {
+    System.out.println(ex.getMessage());
+  }
+}
+```
+
 ## [Python] Convert the code from HackerRank website to local
 
 1. Create a local folder
