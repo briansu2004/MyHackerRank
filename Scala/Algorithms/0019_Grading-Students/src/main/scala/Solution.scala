@@ -25,20 +25,31 @@ object Result {
    * The function is expected to return an INTEGER_ARRAY.
    * The function accepts INTEGER_ARRAY grades as parameter.
    */
+  def gradingStudents1(grades: Array[Int]): Array[Int] = {
+    // Write your code here
+    var result = grades.clone()
+
+    for (i <- result.indices) {
+      val n = result(i)
+      if (n > 40 && n % 5 > 2) {
+        result(i) = ((n - (n % 5)) / 5 + 1).toInt * 5
+      }
+    }
+
+    result
+  }
 
   def gradingStudents(grades: Array[Int]): Array[Int] = {
     // Write your code here
-
     for (i <- grades.indices) {
       val n = grades(i)
-      if (n > 40 && n % 5 > 0 && n % 5 < 3) {
-        grades(i) = (n / 5).ceil.toInt * 5
+      if (n > 37 && n % 5 > 2) {
+        grades(i) = ((n - (n % 5)) / 5 + 1).toInt * 5
       }
     }
 
     grades
   }
-
 }
 
 object Solution {
