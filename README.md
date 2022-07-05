@@ -167,3 +167,7 @@ from heapq import heappop, heappush
 ```
 
 ## SQL (Basic) Skills Certification Test
+
+## SQL (Intermediate) Skills Certification Test
+
+## SQL (Advanced) Skills Certification Test
