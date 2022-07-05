@@ -46,6 +46,26 @@ import scala.collection.mutable
         }
 ```
 
+## [Scala] Stack
+
+Annotations
+
+@deprecated
+
+Deprecated
+
+(Since version 2.12.0) Stack is an inelegant and potentially poorly-performing wrapper around List. Use a List assigned to a var instead.
+
+Scala program for implement stack using linked list.
+
+## [Scala] Queue
+
+In Scala, Queue is implemented as a pair of lists. One is used to insert the elements and second to contain deleted elements. Elements are added to the first list and removed from the second list. The two most basic operations of Queue are Enqueue and Dequeue.
+
+Enqueue – Adding an element at the end of the queue.
+
+Dequeue – Deleting an element from the beginning of the queue.
+
 ## [Java] read from file
 
 ```java
