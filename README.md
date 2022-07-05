@@ -66,6 +66,41 @@ Enqueue – Adding an element at the end of the queue.
 
 Dequeue – Deleting an element from the beginning of the queue.
 
+## [Scala] LCM and GCD
+
+```scala
+  def gcd(a: Array[Int]): Int = {
+    var n = a(0)
+    for (i <- 1 until a.length) {
+      n = gcd(n, a(i))
+    }
+    n
+  }
+
+  def gcd(a: Int, b: Int): Int = {
+    var c = a
+    var d = b
+    while (d > 0) {
+      var t = d
+      d = c % d
+      c = t
+    }
+    c
+  }
+
+  def lcm(a: Int, b: Int): Int = {
+    a * (b / gcd(a, b))
+  }
+
+  def lcm(a: Array[Int]): Int = {
+    var n = a(0)
+    for (i <- 1 until a.length) {
+      n = lcm(n, a(i))
+    }
+    n
+  }
+```
+
 ## [Java] read from file
 
 ```java
