@@ -32,6 +32,20 @@ import scala.collection.mutable
     val visited: Array[Boolean] = Array.fill[Boolean](n)(false)
 ```
 
+## [Scale] Breaks, breakable, break
+
+```scala
+        val loop = new Breaks;
+        loop.breakable {
+            for(i<- 0 to len/2){
+                if(obj.popCharacter()!=obj.dequeueCharacter()){
+                    isPalindrome=false;
+                    loop.break;
+                }
+            }
+        }
+```
+
 ## [Java] read from file
 
 ```java
