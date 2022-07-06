@@ -166,8 +166,16 @@ from collections import defaultdict
 from heapq import heappop, heappush
 ```
 
-## SQL (Basic) Skills Certification Test
+## Certification
 
-## SQL (Intermediate) Skills Certification Test
+### SQL (Basic) Skills Certification Test
 
-## SQL (Advanced) Skills Certification Test
+![SQL (Basic)](SkillsCertification/20220704%20SQL%20(Basic)%20Skills%20Certification.png)
+
+### SQL (Intermediate) Skills Certification Test
+
+![SQL (Intermediate)](SkillsCertification/20220705%20SQL%20(Intermediate)%20Skills%20Certification.png)
+
+### SQL (Advanced) Skills Certification Test
+
+![SQL (Advanced)](SkillsCertification/20220705%20SQL%20(Advanced)%20Skills%20Certification.png)
