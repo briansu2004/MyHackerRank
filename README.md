@@ -2,7 +2,7 @@
 
 My HackerRank
 
-## [Scala] read from file
+## [Scala] Quick fix to fit the local dev
 
 ```scala
 val printWriter = new PrintWriter(sys.env("OUTPUT_PATH"))
