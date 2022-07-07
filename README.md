@@ -14,6 +14,12 @@ val printWriter = new PrintWriter(sys.env("OUTPUT_PATH"))
 val printWriter = new PrintWriter(System.out)
 ```
 
+## [Scale] Read from file
+
+If the IDE is IJ, just changing the "Run/Debug config".
+
+![1657199466620](image/README/IJ_config_stdin.png)
+
 ## [Scala] I use Array[mutable.Queue[Int]] to solve graph problems with Scala
 
 ```scala
@@ -35,12 +41,12 @@ import scala.collection.mutable
 ## [Scale] Breaks, breakable, break
 
 ```scala
-        val loop = new Breaks;
+        val loop = new Breaks
         loop.breakable {
-            for(i<- 0 to len/2){
-                if(obj.popCharacter()!=obj.dequeueCharacter()){
-                    isPalindrome=false;
-                    loop.break;
+            for (i <- 0 to len / 2) {
+                if (obj.popCharacter() != obj.dequeueCharacter()) {
+                    isPalindrome = false
+                    loop.break
                 }
             }
         }
