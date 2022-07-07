@@ -2,7 +2,7 @@
 
 My HackerRank
 
-## [Scala] Quick fix to fit the local dev
+## [Scala] Quick fix to fit the local env
 
 ```scala
 val printWriter = new PrintWriter(sys.env("OUTPUT_PATH"))
@@ -101,7 +101,23 @@ Dequeue – Deleting an element from the beginning of the queue.
   }
 ```
 
-## [Java] read from file
+## [Java] List<Integer> to int[]
+
+```java
+int[] cookies = arr.stream().mapToInt(Integer::intValue).toArray();
+```
+
+## [Java] List<List<Integer>> to int[][]
+
+```java
+List<List<Integer>> list = new ArrayList<>();
+
+int[][] arr = list.stream()
+    .map(l -> l.stream().mapToInt(Integer::intValue).toArray())
+    .toArray(int[][]::new);
+```
+
+## [Java] Read from file
 
 ```java
 try (InputStream inputStream = new FileInputStream("stdin.txt");
@@ -113,7 +129,7 @@ try (InputStream inputStream = new FileInputStream("stdin.txt");
 }
 ```
 
-## [Python] Convert the code from HackerRank website to local
+## [Python] Quick fix to fit the local env
 
 1. Create a local folder
 
@@ -132,12 +148,6 @@ if __name__ == '__main__':
     with open('stdin.txt') as f:
 
         t = int(f.readline().strip())
-```
-
-## [Java] List<Integer> to int[]
-
-```java
-int[] cookies = arr.stream().mapToInt(Integer::intValue).toArray();
 ```
 
 ## [Python] float['inf']
