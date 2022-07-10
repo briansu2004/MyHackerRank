@@ -38,7 +38,7 @@ import scala.collection.mutable
     val visited: Array[Boolean] = Array.fill[Boolean](n)(false)
 ```
 
-## [Scale] Breaks, breakable, break
+## [Scala] Breaks, breakable, break
 
 ```scala
         val loop = new Breaks
@@ -122,6 +122,10 @@ int[][] arr = list.stream()
     .map(l -> l.stream().mapToInt(Integer::intValue).toArray())
     .toArray(int[][]::new);
 ```
+
+## [Java] int[] to List<Integer>
+
+List<Integer> list = Arrays.stream(ints).boxed().collect(Collectors.toList());
 
 ## [Java] Read from file
 
