@@ -186,6 +186,25 @@ from collections import defaultdict
 from heapq import heappop, heappush
 ```
 
+## [Python] Tricky `f.readline().strip()`
+
+stdin.txt
+
+```bash
+hackerhappy
+hackerrank
+9
+```
+
+```python
+    with open('stdin.txt') as f:
+        s = f.readline().strip()
+```
+
+With `.strip()` - 'hackerhappy'
+
+Without `.strip()` - 'hackerhappy\n'
+
 ## Certification
 
 ### SQL (Basic) Skills Certification Test
