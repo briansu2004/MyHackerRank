@@ -127,12 +127,21 @@ int[][] arr = list.stream()
 
 List<Integer> list = Arrays.stream(ints).boxed().collect(Collectors.toList());
 
+## [Java] String[] to int[]
+
+```java
+int[] ar = Stream.of(sr).mapToInt(Integer::parseInt).toArray();
+```
+
 ## [Java] Read from file
 
 ```java
 try (InputStream inputStream = new FileInputStream("stdin.txt");
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));) {
-    ...
+    
+    int n = Integer.parseInt(bufferedReader.readLine());
+    int[] ar = Stream.of(bufferedReader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+
   } catch (Exception ex) {
     System.out.println(ex.getMessage());
   }
