@@ -64,6 +64,13 @@ Deprecated
 
 Scala program for implement stack using linked list.
 
+mutable.Stack -> mutable.MutableList
+
+```scala
+var l = scala.collection.mutable.MutableList(1,2,3)
+l += 4 
+```
+
 ## [Scala] Queue
 
 In Scala, Queue is implemented as a pair of lists. One is used to insert the elements and second to contain deleted elements. Elements are added to the first list and removed from the second list. The two most basic operations of Queue are Enqueue and Dequeue.
