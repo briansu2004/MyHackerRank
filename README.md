@@ -155,6 +155,15 @@ try (InputStream inputStream = new FileInputStream("stdin.txt");
 }
 ```
 
+## [Java] Array fill
+
+```java
+int frequency[] = new int[10001];
+Arrays.fill(frequency, -1);
+```
+
+Scala only needs 1 line (also has the ofDim option).
+
 ## [Python] Quick fix to fit the local env
 
 1. Create a local folder
