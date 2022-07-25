@@ -182,6 +182,38 @@ List<Integer> lst = calorie.stream().sorted(Comparator.reverseOrder()).collect(C
 
 ![1658758002618](image/README/vsc-java-auto-organize-imports.png)
 
+## [Java] print multiple variables
+
+```java
+System.out.printf("The Capital of Country %s is: %s", country, capital);
+```
+
+## [Java] 2D array, string sort etc
+
+```java
+    public static String gridChallenge(List<String> grid) {
+        int row = grid.size();
+        int col = grid.get(0).length();
+        char[][] cgrid = new char[row][col];
+        for (int i = 0; i < row; i++) {
+            String s = grid.get(i);
+            char[] cs = s.toCharArray();
+            Arrays.sort(cs);
+            cgrid[i] = cs;
+        }
+
+        for (int i = 0; i < col; i++) {
+            for (int j = 0; j < row - 1; j++) {
+                if (cgrid[j + 1][i] < cgrid[j][i]) {
+                    return "NO";
+                }
+            }
+        }
+
+        return "YES";
+    }
+```
+
 ## [Python] Quick fix to fit the local env
 
 1. Create a local folder
