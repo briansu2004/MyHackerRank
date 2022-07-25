@@ -164,6 +164,24 @@ Arrays.fill(frequency, -1);
 
 Scala only needs 1 line (also has the ofDim option).
 
+## [Java] Sort the `List<Integer>`
+
+Asc
+
+```java
+List<Integer> lst = arr.stream().sorted().collect(Collectors.toList()); // List<Integer> arr
+```
+
+Desc
+
+```java
+List<Integer> lst = calorie.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList()); // List<Integer> arr
+```
+
+## [Java] Visual Studio Code - auto organize imports
+
+![1658758002618](image/README/vsc-java-auto-organize-imports.png)
+
 ## [Python] Quick fix to fit the local env
 
 1. Create a local folder
