@@ -245,3 +245,28 @@ System.out.printf("The Capital of Country %s is: %s", country, capital);
     // Printing the top element again
     System.out.println(pQueue.peek()); // 15
 ```
+
+## [Java] Array sort and BinarySearch
+
+```java
+    int intArr[] = { 10, 20, 15, 22, 35 };
+    
+    // Using sort() method of Arrays class
+    // and passing arrays to be sorted as in arguments
+    Arrays.sort(intArr);
+    
+    int intKey = 22;
+    
+    // Now in sorted array we will fetch and
+    // return elements/indiciesaccessing indexes to show
+    // array is really sorted
+
+    System.out.println(intKey + " found at index = " + Arrays.binarySearch(intArr, intKey));
+```
+
+## [Java] Copy an Array to a new Array
+
+```java
+String[] strArray = {"orange", "red", "green'"};
+String[] copiedArray = Arrays.stream(strArray).toArray(String[]::new);
+```
