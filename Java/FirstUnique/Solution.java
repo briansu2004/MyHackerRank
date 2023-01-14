@@ -1,8 +1,10 @@
+package Java.FirstUnique;
+
 import java.util.stream.Collectors;
 import java.util.*;
 
 class Solution {
-    public int solution(int[] a) {
+    public static int solution(int[] a) {
         Set<Integer> aSet = Arrays.stream(a).boxed().collect(Collectors.toSet());
 
         List<Integer> aList = Arrays.stream(a).boxed().collect(Collectors.toList());
@@ -16,7 +18,24 @@ class Solution {
         return -1;
     }
 
+
+    public static int solution2(int[] a) {
+        int firstUnique = a[0];
+
+        // for (int i = 1; i < a.length; i++) {
+        // }
+
+        return firstUnique;
+    }
+
     public static void main(String[] args) {
-        System.out.println(solution());
+        int[] intArray = new int[5];
+        intArray[0] = 3;
+        intArray[1] = 12;
+        intArray[2] = 45;
+        intArray[3] = 23;
+        intArray[4] = 11;
+
+        System.out.println(Solution.solution(intArray));
     }
 }

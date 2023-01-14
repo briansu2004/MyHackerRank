@@ -173,3 +173,14 @@ System.out.printf("The Capital of Country %s is: %s", country, capital);
         return "YES";
     }
 ```
+
+## [Java] Initialize an int array
+
+```java
+    int[] intArray = new int[5];
+    intArray[0] = 3;
+    intArray[1] = 12;
+    intArray[2] = 45;
+    intArray[3] = 23;
+    intArray[4] = 11;
+```
