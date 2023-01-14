@@ -356,12 +356,12 @@ Without `.strip()` - 'hackerhappy\n'
 
 ### SQL (Basic) Skills Certification Test
 
-![SQL (Basic)](SkillsCertification/20220704%20SQL%20(Basic)%20Skills%20Certification.png)
+![SQL (Basic)](xSkillsCertification/20220704%20SQL%20(Basic)%20Skills%20Certification.png)
 
 ### SQL (Intermediate) Skills Certification Test
 
-![SQL (Intermediate)](SkillsCertification/20220705%20SQL%20(Intermediate)%20Skills%20Certification.png)
+![SQL (Intermediate)](xSkillsCertification/20220705%20SQL%20(Intermediate)%20Skills%20Certification.png)
 
 ### SQL (Advanced) Skills Certification Test
 
-![SQL (Advanced)](SkillsCertification/20220705%20SQL%20(Advanced)%20Skills%20Certification.png)
+![SQL (Advanced)](xSkillsCertification/20220705%20SQL%20(Advanced)%20Skills%20Certification.png)
