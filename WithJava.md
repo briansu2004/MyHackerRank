@@ -174,6 +174,15 @@ System.out.printf("The Capital of Country %s is: %s", country, capital);
     }
 ```
 
+## [Java] Reverse a string
+
+```java
+    public static String reverseString(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        return sb.reverse().toString();
+    }
+```
+
 ## [Java] Initialize an int array
 
 ```java
@@ -183,4 +192,23 @@ System.out.printf("The Capital of Country %s is: %s", country, capital);
     intArray[2] = 45;
     intArray[3] = 23;
     intArray[4] = 11;
+```
+
+## [Java] Initialize an int List
+
+```java
+    // For ArrayList
+    List<Integer> list = new ArrayList<Integer>();
+    list.add(1);
+    list.add(3);
+
+    // For LinkedList
+    List<Integer> llist = new LinkedList<Integer>();
+    llist.add(2);
+    llist.add(4);
+
+    // For Stack
+    List<Integer> stack = new Stack<Integer>();
+    stack.add(3);
+    stack.add(1);
 ```
