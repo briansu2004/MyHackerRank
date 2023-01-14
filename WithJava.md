@@ -212,3 +212,36 @@ System.out.printf("The Capital of Country %s is: %s", country, capital);
     stack.add(3);
     stack.add(1);
 ```
+
+## [Java] Initialize a Queue
+
+```java
+    Queue<String> pq = new PriorityQueue<>();
+
+    pq.add("Geeks");
+    pq.add("For");
+    pq.add("Geeks");
+```
+
+## [Java] Basic usage of PriorityQueue
+
+```java
+    Queue<Integer> pQueue = new PriorityQueue<Integer>();
+
+    // Adding items to the pQueue
+    // using add()
+    pQueue.add(10);
+    pQueue.add(20);
+    pQueue.add(15);
+
+    // Printing the top element of
+    // the PriorityQueue
+    System.out.println(pQueue.peek()); // 10
+
+    // Printing the top element and removing it
+    // from the PriorityQueue container
+    System.out.println(pQueue.poll()); // 10
+
+    // Printing the top element again
+    System.out.println(pQueue.peek()); // 15
+```
