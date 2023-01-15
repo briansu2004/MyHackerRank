@@ -266,7 +266,38 @@ System.out.printf("The Capital of Country %s is: %s", country, capital);
 
 ## [Java] Copy an Array to a new Array
 
+System.arraycopy
+
 ```java
-String[] strArray = {"orange", "red", "green'"};
-String[] copiedArray = Arrays.stream(strArray).toArray(String[]::new);
+    int[] arrOld1 = {23, 43, 55};
+    int[] arrCopied1 = new int[arrOld1.length];
+    System.arraycopy(arrOld1, 0, arrCopied1, 0, 3);
 ```
+
+Arrays.copyOf
+
+```java
+    String[] arrOld3 = {"Brian", "Effie", "Emily", "Jessie"};
+    String[] arrCopied3 = Arrays.copyOf(arrOld3, arrOld3.length);
+```
+
+Object.clone
+
+```java
+    Employee[] employees = new Employee[3];
+    employees[0] = new Employee("Brian", "M");
+    employees[1] = new Employee("Effie", "F");
+    employees[2] = new Employee("Emily", "F");
+    Employee[] copiedEmployees = employees.clone();
+```
+
+Arrays.stream
+
+```java
+    String[] strArray = {"orange", "red", "green'"};
+    String[] copiedArray = Arrays.stream(strArray).toArray(String[]::new);
+```
+
+Deep copy for primitive object types.
+
+Shallow copy for non-primitive object types.
