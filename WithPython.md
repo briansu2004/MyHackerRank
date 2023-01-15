@@ -67,3 +67,28 @@ hackerrank
 With `.strip()` - 'hackerhappy'
 
 Without `.strip()` - 'hackerhappy\n'
+
+## [Python] Initialize an array
+
+```python
+arr=[]
+arr = [0 for i in range(5)] 
+print(arr)
+
+arr_num = [0] * 5
+print(arr_num)
+```
+
+## [Python] Initialize a 2-D array
+
+```python
+a = [[0 for x in range(columns)] for y in range(rows)]
+```
+
+## [Python] Add an element to a array
+
+```python
+my_input = ['Engineering', 'Medical'] 
+my_input.append('Science') 
+print(my_input) 
+```
