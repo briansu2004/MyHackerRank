@@ -301,3 +301,39 @@ Arrays.stream
 Deep copy for primitive object types.
 
 Shallow copy for non-primitive object types.
+
+## [Java] Print an array
+
+```java
+    String[] arr = {"Brian", "is", "awesome"};
+    System.out.println(Arrays.toString(arr));
+```
+
+## [Java] Print a 2D array
+
+```java
+    double[][] arr = {{1, 5}, {13, 1.55}, {12, 100.6}, {12.1, .85}};
+    System.out.printf("Before sort, %s\n", Arrays.deepToString(arr));
+```
+
+## [Java] Sort a 2D array
+
+```java
+    double[][] arr = {{1, 5}, {13, 1.55}, {12, 100.6}, {12.1, .85}};
+    System.out.printf("Before sort, %s\n", Arrays.deepToString(arr));
+
+    Arrays.sort(arr, (a, b) -> Double.compare(a[0], b[0]));
+    System.out.printf("After sort, %s\n", Arrays.deepToString(arr));
+
+
+    int[][] pts3 = {{-1, 3}, {1, 2}, {-2, 2}, {0, -1}, {-2, 1}};
+    System.out.printf("Before sort, %s\n", Arrays.deepToString(pts3));
+
+    Arrays.sort(pts3, (a, b) -> {
+        if (a[0] == b[0]) {
+            return (a[1] < b[1]) ? -1 : 1;
+        }
+        return (a[0] < b[0]) ? -1 : 1;
+    });
+    System.out.printf("After sort, %s\n", Arrays.deepToString(pts3));
+```
