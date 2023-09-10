@@ -41,7 +41,10 @@ def print_singly_linked_list(node, sep, fptr):
 
 
 def insertNodeAtHead(llist, data):
-    # Write your code here
+    node = SinglyLinkedListNode(data)
+    node.next = llist
+    llist = node
+    return llist
 
 
 if __name__ == '__main__':
