@@ -1,6 +1,9 @@
 #!/bin/python3
 
+import math
 import os
+import random
+import re
 import sys
 
 class SinglyLinkedListNode:
@@ -33,7 +36,7 @@ def print_singly_linked_list(node, sep, fptr):
         if node:
             fptr.write(sep)
 
-# Complete the compare_lists function below.
+# Complete the mergeLists function below.
 
 #
 # For your reference:
@@ -43,26 +46,69 @@ def print_singly_linked_list(node, sep, fptr):
 #     SinglyLinkedListNode next
 #
 #
-def compare_lists(head1, head2):
-    if not head1 and not head2:
-        return 1
+def mergeLists(head1, head2):
+    temp = SinglyLinkedListNode(0)
+    current = temp
+    while head1 and head2:
+        if head1.data <= head2.data:
+            current.next = head1
+            head1 = head1.next
+        else:
+            current.next = head2
+            head2 = head2.next
+        current = current.next
+    if head1:
+        current.next = head1
+    if head2:
+        current.next = head2
+    return temp.next
+
+# def mergeLists(head1, head2):
+#     if not head1 and not head2:
+#         return None
     
-    if (head1 == None) != (head2 == None):
-        return 0
+#     if head1 and not head2:
+#         return head1
     
-    while head1:
-        if not head1.next and not head2.next:
-            return 1
-        
-        if head1.data != head2.data:
-            return 0
-        
-        if (head1.next == None) != (head2.next == None):
-            return 0
-        
-        head1 = head1.next
-        head2 = head2.next
-        
+#     if not head1 and head2:
+#         return head2
+    
+#     if head1.data <= head2.data:
+#         newHead = SinglyLinkedListNode(head1.data)
+#         head1 = head1.next
+#     else:
+#         newHead = SinglyLinkedListNode(head2.data)
+#         head2 = head2.next
+
+#     curr = newHead
+#     while head1 and head2:
+#         if head1.data < head2.data:
+#             node = SinglyLinkedListNode(head1.data)
+#             curr.next = node
+#             curr = node
+#             head1 = head1.next
+#         elif head1.data > head2.data:
+#             node = SinglyLinkedListNode(head2.data)
+#             curr.next = node
+#             curr = node
+#             head2 = head2.next
+#         else:
+#             node = SinglyLinkedListNode(head1.data)
+#             curr.next = node
+#             curr = node
+#             node = SinglyLinkedListNode(head1.data)
+#             curr.next = node
+#             curr = node
+#             head1 = head1.next
+#             head2 = head2.next
+            
+#     if head1 and not head2:
+#         node.next = head1
+    
+#     if not head1 and head2:
+#         node.next = head2
+            
+#     return newHead
 
 if __name__ == '__main__':
     fptr = open(os.environ['OUTPUT_PATH'], 'w')
@@ -86,8 +132,9 @@ if __name__ == '__main__':
             llist2_item = int(input())
             llist2.insert_node(llist2_item)
 
-        result = compare_lists(llist1.head, llist2.head)
+        llist3 = mergeLists(llist1.head, llist2.head)
 
-        fptr.write(str(int(result)) + '\n')
+        print_singly_linked_list(llist3, ' ', fptr)
+        fptr.write('\n')
 
     fptr.close()
