@@ -1,255 +1,292 @@
-import java.util.Scanner;
-import java.util.Arrays;
+import java.io.*;
+import java.math.*;
+import java.text.*;
+import java.util.*;
+import java.util.regex.*;
 
-// I recommend skipping this problem. The problem statement is way too convoluted.
-// However, here are some takeaway concepts from this problem:
-//   - Implementing a custom BigInt as a byte[]
-//   - Implementing log2(int n)
-//   - Realizing that our algorithm can process the giant numbers in portions
-
-// - Runtime: O(n + m) where n = # of digits in L, m = # of digits in R (for interval [L,R]).
-// - Numbers can literally have millions of digits in this problem. An "int" or "long" is not big enough to store these numbers. Although Java's BigInteger is big enough, it turns out to be too slow for this problem. I wrote a custom "BigInt" class to speed up calculations.
-// - To achieve linear runtime, we need an algorithm that splits up these giant numbers into portions and processes them separately. A great way to do this is to split by level, as done below.
-// - This was a very difficult problem. You must have both linear runtime and efficient code to pass all testcases.
-public class Solution {
-    public static void main(String[] args) {
-        /* Read and save input */
-        Scanner scan = new Scanner(System.in);
-        String strL  = new BigInt(scan.next()).subtract(BigInt.ONE).toString(); // subtract 1 since it's [L,R] inclusive
-        String strR  = scan.next();
-        scan.close();
-        
-        /* Calculate interval sizes (by just saving # of digits) */
-        int [] intervalDigits = new int[log2(strR.length()) + 3]; // The +3 gives us an estimate of the size we need
-        for (int k = 0; k < intervalDigits.length; k++) {
-            intervalDigits[k] = digitsInInterval(k);
-        }
-        
-        /* Initialize variables */
-        StringBuilder sb      = new StringBuilder();
-        int endL              = strL.length();
-        int endR              = strR.length();
-        BigInt upperBound     = BigInt.ONE;
-        boolean carry         = false;
-        boolean lastIteration = false;
-        int blockCount        = 0;
-        int level             = 0;
-        
-        /* Calculate counts for increasing segment sizes */
-        while (!lastIteration) {
-            /* Get portion of each String corresponding to current level */
-            int numDigits   = intervalDigits[level + 1] - intervalDigits[level];
-            int startL      = Math.max(endL - numDigits, 0);
-            int startR      = Math.max(endR - numDigits, 0);
-            BigInt numL = (endL == 0) ? BigInt.ZERO : new BigInt(strL.substring(startL, endL));
-            if (carry) {
-                numL = numL.add(BigInt.ONE);
-            }
-            
-            /* Calculate upper bound */
-            if (startR == 0) {
-                upperBound = new BigInt(strR.substring(startR, endR));
-                lastIteration = true;
-            } else {
-                upperBound = BigInt.tenToPower(numDigits);
-            }
-            
-            /* If not skipping this level, process it */
-            if ((!numL.equals(BigInt.ZERO) && !numL.equals(upperBound)) || startR == 0) {               
-                BigInt count = upperBound.subtract(numL);
-                carry = true;
-                blockCount++;
-                sb.append(level + " " + count +  "\n");
-            }
-            
-            /* Update variables for next iteration */
-            endL = startL;
-            endR = startR;
-            level++;
-        }
-        
-        StringBuilder sb2 = new StringBuilder();
-        level             = 0;
-        endR              = strR.length();
-        
-        /* Calculate counts for decreasing segment sizes */
-        while (true) {
-            /* Calculate number of nodes in current level */
-            int numDigits = intervalDigits[level + 1] - intervalDigits[level];
-            int startR    = Math.max(endR - numDigits, 0);
-            if (startR == 0) {
-                break;
-            }
-            BigInt count = new BigInt(strR.substring(startR, endR));
-            
-            /* If not skipping this level, process it */
-            if (!count.equals(BigInt.ZERO)) {
-                blockCount++;
-                sb2.insert(0, level + " " + count +  "\n");
-            }
-
-            /* Update variables for next iteration */
-            endR = startR;
-            level++;
-        }
-        
-        System.out.println(blockCount + "\n" + sb + sb2);
+class Entry implements Comparable<Entry> {
+    int x;
+    int y;
+    int val;
+    public Entry(int x, int y, int val) {
+        this.x = x;
+        this.y = y;
+        this.val = val;
     }
-    
-    static int log2(int n) { // assumes positive number
-        return 31 - Integer.numberOfLeadingZeros(n);
-    }
-    
-    static int digitsInInterval(int k) {
-        if (k == 0) {
-            return 1;
-        } else {
-            return (int) (Math.pow(2, k - 1) + 1);
-        }
+    public int compareTo(Entry other) {
+        return val - other.val;
     }
 }
 
-// - Java's BigInteger is not fast enough to pass the testcases. The BigInt I create below is more efficient for this problem.
-// - This link has good implementation ideas (Though they store numbers in reverse order):
-//   http://iwillgetthatjobatgoogle.tumblr.com/post/32583376161/writing-biginteger-better-than-jdk-one
-// - BigInt numbers may be stored with leading 0s
-// - BigInt only works with non-negative integers
-class BigInt {
-    public static final BigInt ZERO = new BigInt("0");
-    public static final BigInt ONE  = new BigInt("1");
-    
-    public final byte[] digits; // will use 8 bits per digit for simplicity, even though 4 bits is enough
-    
-    /* Constructor */
-    public BigInt(String str) {
-        digits = new byte[str.length()];
-        for (int i = 0; i < digits.length; i++) {
-            digits[i] = Byte.valueOf(str.substring(i, i + 1));
-        }
-    }
-    
-    /* Constructor */
-    public BigInt(byte [] digits) {
-        this.digits = digits;
-    }
-    
-    public static BigInt tenToPower(int exponent) {
-        byte [] digits = new byte[exponent + 1];
-        digits[0] = 1;
-        return new BigInt(digits);
-    }
-    
-    public BigInt add(BigInt other) {
-        byte [] digitsA = digits;
-        byte [] digitsB = other.digits;
-        
-        /* Create new Array to hold answer */
-        int newLength = Math.max(digitsA.length, digitsB.length);
-        if (!(digitsA[0] == 0 && digitsB[0] == 0)) {
-            newLength++;
-        }
-        byte [] result = new byte[newLength];
-        
-        /* Do the addition */
-        int carry = 0;
-        int ptrA = digitsA.length - 1;
-        int ptrB = digitsB.length - 1;
-        int ptrR = result.length  - 1;
-        
-        while (ptrA >= 0 || ptrB >= 0 || carry > 0) {
-            int sum = carry;
-            if (ptrA >= 0) {
-                sum += digitsA[ptrA--];
-            }
-            if (ptrB >= 0) {
-                sum += digitsB[ptrB--];
-            }
-            result[ptrR--] = (byte) (sum % 10);
-            carry          = sum / 10;
-        }
-        return new BigInt(result);
-    }
-    
-    public BigInt subtract(BigInt other) { // assumes "other" is smaller than this BigInt
-        byte [] digitsB = other.digits;
-        byte [] result  = Arrays.copyOf(digits, digits.length); // copy of "digitsA"
-        
-        /* Do the subtraction */
-        int ptrB = digitsB.length - 1;
-        int ptrR = result.length  - 1;
-        while (ptrB >= 0 && ptrR >= 0) {
-            result[ptrR] -= digitsB[ptrB];
-            /* if necessary, do the "borrow" */
-            if (result[ptrR] < 0) {
-                result[ptrR] += 10;
-                int ptrBorrow = ptrR - 1;
-                while (result[ptrBorrow] == 0) {
-                    result[ptrBorrow--] = 9;
-                }
-                result[ptrBorrow]--;
-            }
-            ptrB--;
-            ptrR--;
-        }
-        return new BigInt(result);
-    }
-    
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof BigInt)) {
-            return false;
-        }
-        
-        byte [] digitsA = digits;
-        byte [] digitsB = ((BigInt) other).digits;
+public class Solution {
 
-        int indexA = 0;
-        int indexB = 0;
-        
-        /* Remove leading 0s */
-        while (indexA < digitsA.length && digitsA[indexA] == 0) {
-            indexA++;
-        }
-        while (indexB < digitsB.length && digitsB[indexB] == 0) {
-            indexB++;
-        }
-        
-        /* If lengths not equal, BigInts aren't equal */
-        int lenA = digitsA.length - indexA;
-        int lenB = digitsB.length - indexB;
-        
-        if (lenA != lenB) {
-            return false;
-        }
-        
-        /* Check to see if all digits match for the 2 BigInts */
-        while (indexA < digitsA.length && indexB < digitsB.length) {
-            if (digitsA[indexA++] != digitsB[indexB++]) {
-                return false;
+static int[][] buildSparseTable(int[] arr) {
+        int pow = 1;
+        while ((1 << pow) < arr.length) pow++;
+        int[][] result = new int[arr.length][pow];
+        for (int i = 0; i < arr.length; i++) result[i][0] = arr[i];
+        for (int j = 1; j <= pow; j++) {
+            for (int i = 0; i + (1 << j) <= arr.length; i++) {
+                result[i][j] = Math.min(result[i][j-1],
+                                        result[i + (1 << (j-1))][j-1]);
             }
         }
-        return true;
+        return result;
+    }    /*
+     * Complete the treeCoordinates function below.
+     */
+static int treeCoordinates(int n, int[][] edges, int[][] points) {
+        ArrayList<Integer>[] nodes = new ArrayList[n + 1];
+        for (int i = 1; i <= n; i++) nodes[i] = new ArrayList<Integer>();
+        for (int[] edge : edges) {
+            nodes[edge[0]].add(edge[1]);
+            nodes[edge[1]].add(edge[0]);
+        }
+
+        // Find diameter (two BFS)
+        int root = 0;
+        int tail = 0;
+        {
+            class Entry {
+                int node;
+                int dist;
+                public Entry(int node, int dist) {
+                    this.node = node;
+                    this.dist = dist;
+                }
+            }
+            LinkedList<Entry> Q = new LinkedList<Entry>();
+            boolean[] visited = new boolean[n + 1];
+            visited[1] = true;
+            Q.offer(new Entry(1, 0));
+            int maxDist = 0;
+            int farNode = 1;
+            while (Q.size() > 0) {
+                Entry cur = Q.poll();
+                if (cur.dist > maxDist) {
+                    maxDist = cur.dist;
+                    farNode = cur.node;
+                }
+                for (int neighbor : nodes[cur.node]) {
+                    if (visited[neighbor]) continue;
+                    visited[neighbor] = true;
+                    Q.offer(new Entry(neighbor, cur.dist + 1));
+                }
+            }
+            root = farNode;
+            
+            Q = new LinkedList<Entry>();
+            visited = new boolean[n + 1];
+            visited[root] = true;
+            Q.offer(new Entry(root, 0));
+            maxDist = 0;
+            farNode = root;
+            while (Q.size() > 0) {
+                Entry cur = Q.poll();
+                if (cur.dist > maxDist) {
+                    maxDist = cur.dist;
+                    farNode = cur.node;
+                }
+                for (int neighbor : nodes[cur.node]) {
+                    if (visited[neighbor]) continue;
+                    visited[neighbor] = true;
+                    Q.offer(new Entry(neighbor, cur.dist + 1));
+                }
+            }
+            tail = farNode;
+        }
+        //System.out.println("root = " + root + ", tail = " + tail);
+
+        // Euler tour
+        int[] eulerTour = new int[2*n - 1];
+        final int[] depth = new int[n + 1];
+        int[] eulerLevels = new int[2*n - 1];
+        int[] eulerIndex = new int[n + 1];
+        boolean[] visited = new boolean[n + 1];
+        
+        int[] S = new int[n];
+        int spos = 0;
+        S[0] = root;
+        int pos = 0;
+        int[] neighborCount = new int[n + 1];
+        while (spos > -1) {
+            int cur = S[spos--];
+            if (!visited[cur]) {
+                depth[cur] = spos + 1;
+                eulerIndex[cur] = pos;
+                visited[cur] = true;
+            }
+            eulerLevels[pos] = spos + 1;
+            eulerTour[pos] = cur;
+            pos++;
+            while (neighborCount[cur] < nodes[cur].size()) {
+                if (visited[nodes[cur].get(neighborCount[cur])]) {
+                    neighborCount[cur]++;
+                    continue;
+                }
+                int next = nodes[cur].get(neighborCount[cur]);
+                //parent[next] = cur;
+                S[++spos] = cur;
+                S[++spos] = next;
+                neighborCount[cur]++;
+                break;
+            }
+        }
+
+        int[][] lookup = buildSparseTable(eulerLevels);
+
+        List<Entry> list1 = new ArrayList<Entry>(points.length);
+        List<Entry> list2 = new ArrayList<Entry>(points.length);
+        List<Entry> list3 = new ArrayList<Entry>(points.length);
+        List<Entry> list4 = new ArrayList<Entry>(points.length);
+
+        for (int i = 0; i < points.length; i++) {
+            int x = points[i][0];
+            int y = points[i][1];
+            int xLcaLevel;
+            {
+                int start = Math.min(eulerIndex[x], eulerIndex[tail]);
+                int end = Math.max(eulerIndex[x], eulerIndex[tail]);
+                int pow = 0;
+                while (1 << (pow + 1) <= (end - start)) pow++;
+                xLcaLevel = Math.min(lookup[start][pow],   
+                                     lookup[end + 1 - (1<<pow)][pow]);
+            }
+            int yLcaLevel;
+            {
+                int start = Math.min(eulerIndex[y], eulerIndex[tail]);
+                int end = Math.max(eulerIndex[y], eulerIndex[tail]);
+                int pow = 0;
+                while (1 << (pow + 1) <= (end - start)) pow++;
+                yLcaLevel = Math.min(lookup[start][pow],   
+                                     lookup[end + 1 - (1<<pow)][pow]);
+            }
+            int val1 = depth[x] + depth[y];
+            list1.add(new Entry(x, y, val1));
+            int val2 = -depth[x] - depth[y] + 2*xLcaLevel + 2*yLcaLevel;
+            list2.add(new Entry(x, y, val2));
+            int val3 = depth[x] + depth[y] - 2*xLcaLevel;
+            list3.add(new Entry(x, y, val3));
+            int val4 = -depth[x] - depth[y] + 2*yLcaLevel;
+            list4.add(new Entry(x, y, val4));
+        }
+        Collections.sort(list1, Collections.reverseOrder());
+        Collections.sort(list2);
+        Collections.sort(list3, Collections.reverseOrder());
+        Collections.sort(list4);
+
+        int maxDist = 0;
+
+        for (int i = 0; i < points.length; i++) {
+            boolean shouldContinue = false;
+            for (int j = 0; j <= i; j++) {
+                Entry e1 = list1.get(i-j);
+                Entry e2 = list2.get(j);
+                int potential12 = e1.val - e2.val;
+                if (potential12 > maxDist) {
+                    shouldContinue = true;
+                    int x1 = e1.x;
+                    int y1 = e1.y;
+                    int x2 = e2.x;
+                    int y2 = e2.y;
+                    int xLcaLevel;
+                    {
+                        int start = Math.min(eulerIndex[x1], eulerIndex[x2]);
+                        int end = Math.max(eulerIndex[x1], eulerIndex[x2]);
+                        int pow = 0;
+                        while (1 << (pow + 1) <= (end - start)) pow++;
+                        xLcaLevel = Math.min(lookup[start][pow],   
+                                             lookup[end + 1 - (1<<pow)][pow]);
+                    }
+                    int yLcaLevel;
+                    {
+                        int start = Math.min(eulerIndex[y1], eulerIndex[y2]);
+                        int end = Math.max(eulerIndex[y1], eulerIndex[y2]);
+                        int pow = 0;
+                        while (1 << (pow + 1) <= (end - start)) pow++;
+                        yLcaLevel = Math.min(lookup[start][pow],   
+                                             lookup[end + 1 - (1<<pow)][pow]);
+                    }
+                    int actual12 = depth[x1] + depth[x2] - 2*xLcaLevel
+                                   + depth[y1] + depth[y2] - 2*yLcaLevel;
+                    maxDist = Math.max(maxDist, actual12);
+                }
+                Entry e3 = list3.get(i-j);
+                Entry e4 = list4.get(j);
+                int potential34 = e3.val - e4.val;
+                if (potential34 > maxDist) {
+                    shouldContinue = true;
+                    int x3 = e3.x;
+                    int y3 = e3.y;
+                    int x4 = e4.x;
+                    int y4 = e4.y;
+                    int xLcaLevel;
+                    {
+                        int start = Math.min(eulerIndex[x3], eulerIndex[x4]);
+                        int end = Math.max(eulerIndex[x3], eulerIndex[x4]);
+                        int pow = 0;
+                        while (1 << (pow + 1) <= (end - start)) pow++;
+                        xLcaLevel = Math.min(lookup[start][pow],   
+                                             lookup[end + 1 - (1<<pow)][pow]);
+                    }
+                    int yLcaLevel;
+                    {
+                        int start = Math.min(eulerIndex[y3], eulerIndex[y4]);
+                        int end = Math.max(eulerIndex[y3], eulerIndex[y4]);
+                        int pow = 0;
+                        while (1 << (pow + 1) <= (end - start)) pow++;
+                        yLcaLevel = Math.min(lookup[start][pow],   
+                                             lookup[end + 1 - (1<<pow)][pow]);
+                    }
+                    int actual34 = depth[x3] + depth[x4] - 2*xLcaLevel
+                                   + depth[y3] + depth[y4] - 2*yLcaLevel;
+                    maxDist = Math.max(maxDist, actual34);
+                }
+            }
+            if (!shouldContinue) break;
+        }
+
+        return maxDist;
     }
-    
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        int i = 0;
-        
-        /* Skip leading 0s */
-        while (i < digits.length && digits[i] == 0) {
-            i++;
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String[] nm = scanner.nextLine().split(" ");
+
+        int n = Integer.parseInt(nm[0].trim());
+
+        int m = Integer.parseInt(nm[1].trim());
+
+        int[][] edges = new int[n-1][2];
+
+        for (int edgesRowItr = 0; edgesRowItr < n-1; edgesRowItr++) {
+            String[] edgesRowItems = scanner.nextLine().split(" ");
+
+            for (int edgesColumnItr = 0; edgesColumnItr < 2; edgesColumnItr++) {
+                int edgesItem = Integer.parseInt(edgesRowItems[edgesColumnItr].trim());
+                edges[edgesRowItr][edgesColumnItr] = edgesItem;
+            }
         }
-        
-        /* Special Case: the BigInt 0 */
-        if (i == digits.length) {
-            return "0";
+
+        int[][] points = new int[m][2];
+
+        for (int pointsRowItr = 0; pointsRowItr < m; pointsRowItr++) {
+            String[] pointsRowItems = scanner.nextLine().split(" ");
+
+            for (int pointsColumnItr = 0; pointsColumnItr < 2; pointsColumnItr++) {
+                int pointsItem = Integer.parseInt(pointsRowItems[pointsColumnItr].trim());
+                points[pointsRowItr][pointsColumnItr] = pointsItem;
+            }
         }
-        
-        /* Create and return String */
-        for (  ; i < digits.length; i++) {
-            sb.append(digits[i]);
-        }
-        return sb.toString();
+
+        int result = treeCoordinates(n, edges, points);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
     }
 }
